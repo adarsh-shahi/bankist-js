@@ -54,27 +54,30 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 
-
-
-
-
-
-const user = document.querySelector('.login__input--user');
-const pin = document.querySelector('.login__input--pin');
-
-// user.addEventListener('change', () => {
-//   user.value = 
-// })
-
-
-
 document.querySelector('.login__btn').addEventListener('click', function() {
-  console.log(user.value, pin.value);
-  if(user.value === 'js' && pin.value === '1111'){
+  console.log(inputLoginUsername.value, inputLoginPin.value);
+  if(inputLoginUsername.value === 'js' && inputLoginPin.value === '1111'){
     console.log('Logged in');
   }
-  else if(user.value === 'jd' && pin.value === '2222'){
+  else if(inputLoginUsername.value === 'jd' && inputLoginPin.value === '2222'){
     console.log('Logged in');
   }
   else console.log('Wrong Credentials');
 })
+
+const displayMovements = function(movements){
+  containerMovements.innerHTML = ''
+  movements.forEach(function(mov, i){
+    const type = mov > 0 ? 'deposit' : 'withdrawal'
+    const html = `<div class="movements__row">
+    <div class="movements__type movements__type--${type}">${i+1} ${type}</div>
+    <div class="movements__date">3 days ago</div>
+    <div class="movements__value">${mov}</div>
+  </div>` 
+
+  containerMovements.insertAdjacentHTML('afterbegin' ,html);
+
+  })
+}
+
+displayMovements(account1.movements);
