@@ -81,3 +81,19 @@ const displayMovements = function(movements){
 }
 
 displayMovements(account1.movements);
+
+const euroToUsd = 1.1; 
+
+const movementsUSD = account1.movements.map(mov => {
+  return Math.trunc(mov * euroToUsd)
+})
+ 
+console.log(movementsUSD);
+
+const userNames = accounts.map(({owner}) => {
+  const array = owner.split(' ')
+  return array[0].charAt(0).toLowerCase() + array[1].charAt(0).toLowerCase();
+})
+
+console.log(userNames);
+
