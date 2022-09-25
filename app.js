@@ -90,11 +90,16 @@ const movementsUSD = account1.movements.map(mov => {
  
 console.log(movementsUSD);
 
-const userNames = accounts.map(({owner}) => {
+const createUsernames = function(accounts){
+  accounts.forEach((acc) => {
+    acc.username = acc.owner.toLowerCase().split(' ').map(name => {
+      return name[0]
+    }).join('')
+  })
+}
 
-  const [firstName = '', middleName = '', lastName = ''] = owner.toLowerCase().split(' ')
-  return firstName.charAt(0) + middleName.charAt(0) + lastName.charAt(0);
-})
+createUsernames(accounts);
+console.log(accounts);
 
-console.log(userNames);
+
 
