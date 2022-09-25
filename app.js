@@ -91,8 +91,9 @@ const movementsUSD = account1.movements.map(mov => {
 console.log(movementsUSD);
 
 const userNames = accounts.map(({owner}) => {
-  const array = owner.split(' ')
-  return array[0].charAt(0).toLowerCase() + array[1].charAt(0).toLowerCase();
+
+  const [firstName = '', middleName = '', lastName = ''] = owner.toLowerCase().split(' ')
+  return firstName.charAt(0) + middleName.charAt(0) + lastName.charAt(0);
 })
 
 console.log(userNames);
