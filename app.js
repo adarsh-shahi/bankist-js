@@ -101,5 +101,14 @@ const createUsernames = function(accounts){
 createUsernames(accounts);
 console.log(accounts);
 
+const currentBalanceDisplay = function(movements) {
+  const totalBalance = movements.reduce((total, mov) => {
+    return total + mov
+  }, 0)
+  labelBalance.textContent = `${totalBalance} EUR`
+}
+
+currentBalanceDisplay(account1.movements);
+
 
 
