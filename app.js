@@ -53,11 +53,11 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
-const currentBalanceDisplay = function (movements) {
-	const totalBalance = movements.reduce((total, mov) => {
+const currentBalanceDisplay = function (account) {
+	account.balance = account.movements.reduce((total, mov) => {
 		return total + mov;
 	}, 0);
-	labelBalance.textContent = `${totalBalance}€`;
+	labelBalance.textContent = `${account.balance}€`;
 };
 
 const displayMovements = function (movements) {
@@ -81,7 +81,7 @@ const calcSummaryDisplay = function (account) {
 		})
 		.reduce((acc, mov) => {
 			return acc + mov;
-		},0);
+		}, 0);
 
 	const totalWithdrawal = Math.abs(
 		account.movements
@@ -90,7 +90,7 @@ const calcSummaryDisplay = function (account) {
 			})
 			.reduce((acc, mov) => {
 				return acc + mov;
-			},0)
+			}, 0)
 	);
 
 	const interest = account.movements
@@ -109,7 +109,7 @@ const calcSummaryDisplay = function (account) {
 
 	labelSumIn.textContent = Math.trunc(totalDeposits) + "€";
 	labelSumOut.textContent = Math.trunc(totalWithdrawal) + "€";
-	labelSumInterest.textContent = interest; 
+	labelSumInterest.textContent = interest;
 };
 
 const createUsernames = function (accounts) {
@@ -127,6 +127,12 @@ const createUsernames = function (accounts) {
 createUsernames(accounts);
 console.log(accounts);
 
+const updateUI = function (currentUser) {
+	displayMovements(currentUser.movements);
+	currentBalanceDisplay(currentUser);
+	calcSummaryDisplay(currentUser);
+};
+
 // LOGIN
 let currentUser = "";
 
@@ -134,25 +140,21 @@ btnLogin.addEventListener("click", function (e) {
 	e.preventDefault(); //prevent form from submitting
 	currentUser = accounts.find((acc) => {
 		return (
-			inputLoginUsername.value === acc.username &&
+			inputLoginUsername.value.trim() === acc.username &&
 			Number(inputLoginPin.value) === acc.pin
 		);
 	});
 	if (currentUser) {
-		
-		inputLoginUsername.value = ''
-		inputLoginPin.value = ''
-		inputLoginPin.blur(); // loses its focus 
+		inputLoginUsername.value = "";
+		inputLoginPin.value = "";
+		inputLoginPin.blur(); // loses its focus
 
 		labelWelcome.textContent = `Welocme back, ${
 			currentUser.owner.split(" ")[0]
 		}`;
 		containerApp.style.opacity = 100;
-		displayMovements(currentUser.movements);
-		currentBalanceDisplay(currentUser.movements);
-		calcSummaryDisplay(currentUser);
-	}
-	else{
+		updateUI(currentUser);
+	} else {
 		labelWelcome.textContent = `Wrong Credentials`;
 		containerApp.style.opacity = 0;
 	}
@@ -165,3 +167,31 @@ const movementsUSD = account1.movements.map((mov) => {
 });
 
 console.log(movementsUSD);
+
+btnTransfer.addEventListener("click", (e) => {
+	e.preventDefault();
+	const sendTo = inputTransferTo.value;
+	const sendAmount = Number(inputTransferAmount.value);
+	const user = accounts.find((account) => {
+		return (
+			account.username === sendTo && account.username !== currentUser.username
+		);
+	});
+	if (user) {
+		console.log(currentUser, user);
+		if (currentUser.balance - sendAmount >= 0 && sendAmount > 0) {
+			currentUser.balance -= sendAmount;
+			currentUser.movements.push(-sendAmount);
+			user.balance += sendAmount;
+			user.movements.push(sendAmount);
+			updateUI(currentUser)
+		} else {
+			console.log(`Insufficient balance`);
+		}
+	} else {
+		console.log(`Cannot find user`);
+	}
+	inputTransferTo.value = "";
+	inputTransferAmount.value = "";
+	inputTransferAmount.blur();
+});
