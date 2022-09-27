@@ -53,6 +53,65 @@ const inputLoanAmount = document.querySelector(".form__input--loan-amount");
 const inputCloseUsername = document.querySelector(".form__input--user");
 const inputClosePin = document.querySelector(".form__input--pin");
 
+const currentBalanceDisplay = function (movements) {
+	const totalBalance = movements.reduce((total, mov) => {
+		return total + mov;
+	}, 0);
+	labelBalance.textContent = `${totalBalance}€`;
+};
+
+const displayMovements = function (movements) {
+	containerMovements.innerHTML = "";
+	movements.forEach(function (mov, i) {
+		const type = mov > 0 ? "deposit" : "withdrawal";
+		const html = `<div class="movements__row">
+    <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
+    <div class="movements__date">3 days ago</div>
+    <div class="movements__value">${mov} €</div>
+  </div>`;
+
+		containerMovements.insertAdjacentHTML("afterbegin", html);
+	});
+};
+
+const calcSummaryDisplay = function (account) {
+	const totalDeposits = account.movements
+		.filter((mov) => {
+			return mov > 0;
+		})
+		.reduce((acc, mov) => {
+			return acc + mov;
+		},0);
+
+	const totalWithdrawal = Math.abs(
+		account.movements
+			.filter((mov) => {
+				return mov < 0;
+			})
+			.reduce((acc, mov) => {
+				return acc + mov;
+			},0)
+	);
+
+	const interest = account.movements
+		.filter((mov) => {
+			return mov > 0;
+		})
+		.map((deposit) => {
+			return (deposit * account.interestRate) / 100;
+		})
+		.filter((int, i, arr) => {
+			return int >= 1;
+		})
+		.reduce((acc, ins) => {
+			return acc + ins;
+		});
+
+	labelSumIn.textContent = Math.trunc(totalDeposits) + "€";
+	labelSumOut.textContent = Math.trunc(totalWithdrawal) + "€";
+	labelSumInterest.textContent = interest; 
+};
+
 const createUsernames = function (accounts) {
 	accounts.forEach((acc) => {
 		acc.username = acc.owner
@@ -79,31 +138,25 @@ btnLogin.addEventListener("click", function (e) {
 			Number(inputLoginPin.value) === acc.pin
 		);
 	});
-	if(currentUser){
-		labelWelcome.textContent = `Welocme back, ${currentUser.owner.split(' ')[0]}`
-		containerApp.style.opacity = 100
+	if (currentUser) {
+		
+		inputLoginUsername.value = ''
+		inputLoginPin.value = ''
+		inputLoginPin.blur(); // loses its focus 
+
+		labelWelcome.textContent = `Welocme back, ${
+			currentUser.owner.split(" ")[0]
+		}`;
+		containerApp.style.opacity = 100;
 		displayMovements(currentUser.movements);
 		currentBalanceDisplay(currentUser.movements);
-		calcSummaryDisplay(currentUser.movements);
-
+		calcSummaryDisplay(currentUser);
+	}
+	else{
+		labelWelcome.textContent = `Wrong Credentials`;
+		containerApp.style.opacity = 0;
 	}
 });
-
-const displayMovements = function (movements) {
-	containerMovements.innerHTML = "";
-	movements.forEach(function (mov, i) {
-		const type = mov > 0 ? "deposit" : "withdrawal";
-		const html = `<div class="movements__row">
-    <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-    <div class="movements__date">3 days ago</div>
-    <div class="movements__value">${mov} €</div>
-  </div>`;
-
-		containerMovements.insertAdjacentHTML("afterbegin", html);
-	});
-};
-
-
 
 const euroToUsd = 1.1;
 
@@ -112,52 +165,3 @@ const movementsUSD = account1.movements.map((mov) => {
 });
 
 console.log(movementsUSD);
-
-const currentBalanceDisplay = function (movements) {
-	const totalBalance = movements.reduce((total, mov) => {
-		return total + mov;
-	}, 0);
-	labelBalance.textContent = `${totalBalance}€`;
-};
-
-
-
-const calcSummaryDisplay = function (movements) {
-	const totalDeposits = movements
-		.filter((mov) => {
-			return mov > 0;
-		})
-		.reduce((acc, mov) => {
-			return acc + mov;
-		});
-
-	const totalWithdrawal = Math.abs(
-		movements
-			.filter((mov) => {
-				return mov < 0;
-			})
-			.reduce((acc, mov) => {
-				return acc + mov;
-			})
-	);
-
-	const interest = movements
-		.filter((mov) => {
-			return mov > 0;
-		})
-		.map((deposit) => {
-			return (deposit * 1.2) / 100;
-		})
-		.filter((int, i, arr) => {
-			return int >= 1;
-		})
-		.reduce((acc, ins) => {
-			return acc + ins;
-		});
-
-	labelSumIn.textContent = Math.trunc(totalDeposits) + "€";
-	labelSumOut.textContent = Math.trunc(totalWithdrawal) + "€";
-	labelSumInterest.textContent = (interest);
-};
-
-
