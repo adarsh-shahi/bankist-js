@@ -184,7 +184,7 @@ btnTransfer.addEventListener("click", (e) => {
 			currentUser.movements.push(-sendAmount);
 			user.balance += sendAmount;
 			user.movements.push(sendAmount);
-			updateUI(currentUser)
+			updateUI(currentUser);
 		} else {
 			console.log(`Insufficient balance`);
 		}
@@ -194,4 +194,21 @@ btnTransfer.addEventListener("click", (e) => {
 	inputTransferTo.value = "";
 	inputTransferAmount.value = "";
 	inputTransferAmount.blur();
+});
+
+btnClose.addEventListener("click", (e) => {
+	e.preventDefault();
+
+	const user = inputCloseUsername.value;
+	const pin = Number(inputClosePin.value);
+	if (user === currentUser.username && pin === currentUser.pin) {
+		const accIndex = accounts.findIndex((acc) => {
+			return user === acc.username && pin === acc.pin;
+		});
+		accounts.splice(accIndex, 1); // delete account
+		inputCloseUsername.value = "";
+		inputClosePin.value = "";
+		inputClosePin.blur();
+		containerApp.style.opacity = 0;
+	}
 });
