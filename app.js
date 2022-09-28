@@ -218,7 +218,8 @@ btnLoan.addEventListener("click", (e) => {
 	const loanAmount = Number(inputLoanAmount.value);
 	const isLoanValid =
 		loanAmount > 0 &&
-		currentUser.movements.some((mov) => {  // some returns either true or false
+		currentUser.movements.some((mov) => {
+			// some returns either true or false
 			return mov >= (10 / 100) * loanAmount;
 		});
 	if (isLoanValid) {
@@ -230,12 +231,21 @@ btnLoan.addEventListener("click", (e) => {
 	}
 });
 
+const totalBalance = accounts
+	.map((acc) => {
+		return acc.movements;
+	})
+	.flat()
+	.reduce((acc, mov) => {
+		return acc + mov;
+	}, 0);
+console.log(totalBalance);
 
-const totalBalance = accounts.map(acc => {
-	return acc.movements
-})
-.flat()
-.reduce((acc, mov) => {
-	return acc + mov
-}, 0)
+const totalBalance2 = accounts
+	.flatMap((acc) => {
+		return acc.movements;
+	})
+	.reduce((acc, mov) => {
+		return acc + mov;
+	}, 0);
 console.log(totalBalance);
