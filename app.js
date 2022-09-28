@@ -60,9 +60,14 @@ const currentBalanceDisplay = function (account) {
 	labelBalance.textContent = `${account.balance}€`;
 };
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
 	containerMovements.innerHTML = "";
-	movements.forEach(function (mov, i) {
+
+	const movs = sort ? movements.slice().sort((a, b) => {
+		return a - b  // assending   
+	}) : movements
+
+	movs.forEach(function (mov, i) {
 		const type = mov > 0 ? "deposit" : "withdrawal";
 		const html = `<div class="movements__row">
     <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
@@ -248,4 +253,4 @@ const totalBalance2 = accounts
 	.reduce((acc, mov) => {
 		return acc + mov;
 	}, 0);
-console.log(totalBalance);
+console.log(totalBalance); 
