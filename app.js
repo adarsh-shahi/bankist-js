@@ -212,3 +212,20 @@ btnClose.addEventListener("click", (e) => {
 		containerApp.style.opacity = 0;
 	}
 });
+
+btnLoan.addEventListener("click", (e) => {
+	e.preventDefault();
+	const loanAmount = Number(inputLoanAmount.value);
+	const isLoanValid =
+		loanAmount > 0 &&
+		currentUser.movements.some((mov) => {  // some returns either true or false
+			return mov >= (10 / 100) * loanAmount;
+		});
+	if (isLoanValid) {
+		currentUser.balance += loanAmount;
+		currentUser.movements.push(loanAmount);
+		updateUI(currentUser);
+	} else {
+		console.log("Reduce loan amount");
+	}
+});
