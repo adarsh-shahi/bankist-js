@@ -229,3 +229,13 @@ btnLoan.addEventListener("click", (e) => {
 		console.log("Reduce loan amount");
 	}
 });
+
+
+const totalBalance = accounts.map(acc => {
+	return acc.movements
+})
+.flat()
+.reduce((acc, mov) => {
+	return acc + mov
+}, 0)
+console.log(totalBalance);
