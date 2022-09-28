@@ -64,7 +64,7 @@ const displayMovements = function (movements, sort = false) {
 	containerMovements.innerHTML = "";
 
 	const movs = sort ? movements.slice().sort((a, b) => {
-		return a - b  // assending   
+		return a - b  // Ascending   
 	}) : movements
 
 	movs.forEach(function (mov, i) {
@@ -254,3 +254,9 @@ const totalBalance2 = accounts
 		return acc + mov;
 	}, 0);
 console.log(totalBalance); 
+
+let sortState = false;
+btnSort.addEventListener('click', e => {
+	e.preventDefault();
+	displayMovements(currentUser.movements, !sortState)
+})
