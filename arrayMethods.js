@@ -17,6 +17,30 @@ const findSarahDog = function () {
 	} else console.log(`Sarah Dog not found`);
 };
 
+const ownersDogEatTooMuch = function () {
+	console.log('Inside owners dog that eat too much');
+	const ownersEatTooMuch = dogs
+		.filter((dog) => {
+			return dog.curFood > dog.recommendedFood * 1.1;
+		})
+		.reduce((acc, dog) => {
+			return acc.concat(dog.owners);
+		}, []);
+	console.log(ownersEatTooMuch);
+};
+
+const ownersDogEatTooLittle = function () {
+	console.log('Inside owners dog that eat too little');
+	const ownersEatTooLittle = dogs
+		.filter((dog) => {
+			return dog.curFood < dog.recommendedFood * 0.9;
+		})
+		.reduce((acc, dog) => {
+			return acc.concat(dog.owners);
+		}, []);
+	console.log(ownersEatTooLittle);
+};
+
 
 const dogs = [
 	{
@@ -43,3 +67,5 @@ const dogs = [
 
 recommendedFood(dogs);
 findSarahDog()
+ownersDogEatTooMuch()
+ownersDogEatTooLittle()
