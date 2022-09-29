@@ -74,11 +74,24 @@ const displayMsg = function(much, little) {
 
 recommendedFood();
 
+// Exact Amount of Food
+console.log(dogs.some(dog => {
+  return dog.curFood === dog.recommendedFood 
+}));
+
+// OKAY Amount of Food
 console.log(dogs.some(dog => {
   return dog.curFood <= dog.recommendedFood * 1.1 && dog.curFood >= dog.recommendedFood * 0.9
 }));
 
+const okayAmountofFood = function(){
+  const dogsEatingOkay = dogs.filter(dog => {
+    return dog.curFood <= dog.recommendedFood * 1.1 && dog.curFood >= dog.recommendedFood * 0.9
+  })
+  console.log(dogsEatingOkay);
+}
 
+okayAmountofFood()
 findSarahDog()
 ownersDogEatTooMuch()
 ownersDogEatTooLittle()
