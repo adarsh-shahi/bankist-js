@@ -35,9 +35,7 @@ const findSarahDog = function () {
 	if (sarahDog) {
 		const lowerRange = sarahDog.recommendedFood * 0.9;
 		const upperRange = sarahDog.recommendedFood * 1.1;
-		if (sarahDog.curFood > upperRange) console.log(`Too much`);
-		else if (sarahDog.curFood < lowerRange) console.log(`Too little`);
-		else console.log("Proper Diet");
+		console.log(`Sarah Dog is eating too ${sarahDog.curFood > sarahDog.recommendedFood ? 'much' : 'little'}`);
 	} else console.log(`Sarah Dog not found`);
 };
 
