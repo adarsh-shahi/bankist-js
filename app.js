@@ -153,6 +153,15 @@ const updateUI = function (currentUser) {
 // LOGIN
 let currentUser = "";
 
+//Fake always logged in
+currentUser = account1;
+updateUI(currentUser)
+containerApp.style.opacity = 100
+
+const now = new Date()
+
+labelDate.textContent = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}, ${now.getHours()}:${now.getMinutes()}`
+
 btnLogin.addEventListener("click", function (e) {
 	e.preventDefault(); //prevent form from submitting
 	currentUser = accounts.find((acc) => {
@@ -246,8 +255,10 @@ btnLoan.addEventListener("click", (e) => {
 	} else {
 		console.log("Reduce loan amount");
 	}
+	inputLoanAmount.value = ''
+	inputLoanAmount.blur()
 });
-
+ 
 const totalBalance = accounts
 	.map((acc) => {
 		return acc.movements;
@@ -272,8 +283,6 @@ btnSort.addEventListener('click', e => {
 	e.preventDefault();
 	displayMovements(currentUser.movements, !sortState)
 })
-
-
 
 
 labelBalance.addEventListener('click', () => {
