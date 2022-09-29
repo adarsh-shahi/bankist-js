@@ -1,7 +1,20 @@
-const recommendedFood = function (dogs) {
+const recommendedFood = function () {
 	dogs.forEach((dog) => {
 		dog.recommendedFood = Math.trunc(dog.weight ** 0.75 * 28);
 	});
+};
+
+const findSarahDog = function () {
+	const sarahDog = dogs.find((dog) => {
+		return dog.owners.includes("Sarah");
+	});
+	if (sarahDog) {
+		const lowerRange = sarahDog.recommendedFood * 0.9;
+		const upperRange = sarahDog.recommendedFood * 1.1;
+		if (sarahDog.curFood > upperRange) console.log(`Too much`);
+		else if (sarahDog.curFood < lowerRange) console.log(`Too little`);
+		else console.log("Proper Diet");
+	} else console.log(`Sarah Dog not found`);
 };
 
 
@@ -29,3 +42,4 @@ const dogs = [
 ];
 
 recommendedFood(dogs);
+findSarahDog()
