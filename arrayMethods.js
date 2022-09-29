@@ -17,9 +17,10 @@ const findSarahDog = function () {
 	} else console.log(`Sarah Dog not found`);
 };
 
+let ownersEatTooMuch = []
 const ownersDogEatTooMuch = function () {
 	console.log('Inside owners dog that eat too much');
-	const ownersEatTooMuch = dogs
+	 ownersEatTooMuch = dogs
 		.filter((dog) => {
 			return dog.curFood > dog.recommendedFood * 1.1;
 		})
@@ -29,9 +30,10 @@ const ownersDogEatTooMuch = function () {
 	console.log(ownersEatTooMuch);
 };
 
+let ownersEatTooLittle = []
 const ownersDogEatTooLittle = function () {
 	console.log('Inside owners dog that eat too little');
-	const ownersEatTooLittle = dogs
+	 ownersEatTooLittle = dogs
 		.filter((dog) => {
 			return dog.curFood < dog.recommendedFood * 0.9;
 		})
@@ -40,6 +42,11 @@ const ownersDogEatTooLittle = function () {
 		}, []);
 	console.log(ownersEatTooLittle);
 };
+
+const displayMsg = function(much, little) {
+  console.log(`${much.join(' and ')}'s dogs eat too much`);
+  console.log(`${little.join(' and ')}'s dogs eat too little`);
+}
 
 
 const dogs = [
@@ -65,7 +72,8 @@ const dogs = [
 	},
 ];
 
-recommendedFood(dogs);
+recommendedFood();
 findSarahDog()
 ownersDogEatTooMuch()
 ownersDogEatTooLittle()
+displayMsg(ownersEatTooMuch, ownersEatTooLittle)
