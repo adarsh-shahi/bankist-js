@@ -91,6 +91,15 @@ const okayAmountofFood = function(){
   console.log(dogsEatingOkay);
 }
 
+const sortByRecommendedFood = function(){
+  const dogsCopy = dogs.slice()
+  dogsCopy.sort((a, b) => {
+    return a.recommendedFood - b.recommendedFood
+  })
+  console.log(dogsCopy);
+}
+
+sortByRecommendedFood()
 okayAmountofFood()
 findSarahDog()
 ownersDogEatTooMuch()
